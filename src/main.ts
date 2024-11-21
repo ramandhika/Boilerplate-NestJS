@@ -5,8 +5,15 @@ import { Logger } from '@nestjs/common';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  await app.listen(process.env.APP_PORT ?? 3000);
+  const globalPrefix = 'api';
+  const port = process.env.APP_PORT ?? 3000;
+  const appUrl = process.env.APP_URL ?? 'http://localhost:';
+  
+  app.setGlobalPrefix(globalPrefix);
+  app.enableCors();
+  
+  await app.listen(port);
 
-  Logger.log(`Server running on ${process.env.APP_URL ?? 'http://localhost:'}${process.env.APP_PORT ?? 3000}`, 'Running Port');
+  Logger.log(`Server running on ${appUrl}${port}`, 'Running Port');
 }
 bootstrap();
